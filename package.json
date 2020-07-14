@@ -5,8 +5,8 @@
   "private": true,
   "main": "build/index.js",
   "scripts": {
-    "test": "npx mocha tests/*.spec.js",
-    "coverage": "npx nyc mocha tests/*.spec.js",
+    "test": "npx mocha",
+    "coverage": "npx nyc mocha",
     "test:docker": "npx mocha tests/docker/*.spec.js",
     "build": "npm run standardx && npx tsc && npm run test",
     "build:watch": "npx tsc --watch",
@@ -55,5 +55,10 @@
     "plugins": [
       "@typescript-eslint/eslint-plugin"
     ]
+  },
+  "mocha": {
+    "spec": "tests",
+    "parallel": true,
+    "enable-source-maps": true
   }
 }
