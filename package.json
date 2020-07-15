@@ -58,7 +58,7 @@
   },
   "mocha": {
     "spec": "tests",
-    "parallel": true,
+    "parallel": false,
     "enable-source-maps": true
   }
 }
