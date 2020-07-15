@@ -11,9 +11,6 @@
     "build:watch": "npx tsc --watch",
     "standardx": "npx standardx --fix **/*.ts"
   },
-  "files": [
-    "build/**/*"
-  ],
   "keywords": [
     "compose",
     "sql",
