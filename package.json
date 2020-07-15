@@ -7,7 +7,7 @@
   "scripts": {
     "test": "npx mocha",
     "coverage": "npx nyc mocha",
-    "report": "npx nyc mocha --report lcovonly -- -R spec && codecov",
+    "report": "npx nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "npm run standardx && npx tsc && npm run test",
     "build:watch": "npx tsc --watch",
     "standardx": "npx standardx --fix **/*.ts"
