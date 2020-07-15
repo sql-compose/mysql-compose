@@ -4,4 +4,4 @@ node_js:
 install:
   - npm install -g codecov
 script:
-  - nyc mocha --report lcovonly -- -R spec && codecov
+  - npx nyc mocha --report lcovonly -- -R spec && codecov
