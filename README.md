@@ -1,3 +1,7 @@
+![alt text](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)
+# sql-compose
+
+
 ## Install
 `npm i mysql-compose`  
 `npm i mysql2`
