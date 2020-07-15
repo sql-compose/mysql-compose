@@ -12,7 +12,7 @@
     "standardx": "npx standardx --fix **/*.ts"
   },
   "files": [
-    "build"
+    "build/**/*"
   ],
   "keywords": [
     "compose",
