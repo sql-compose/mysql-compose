@@ -1,13 +1,12 @@
 {
   "name": "mysql-compose",
   "version": "1.0.0",
-  "description": "A Mysql query builder",
+  "description": "A Javascript-MySql query builder",
   "private": true,
   "main": "build/index.js",
   "scripts": {
     "test": "npx mocha",
     "coverage": "npx nyc mocha",
-    "test:docker": "npx mocha tests/docker/*.spec.js",
     "build": "npm run standardx && npx tsc && npm run test",
     "build:watch": "npx tsc --watch",
     "standardx": "npx standardx --fix **/*.ts"

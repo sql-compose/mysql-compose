@@ -15,7 +15,7 @@ const {
   joins, inner, left, right, full  } = require('../build/index')
 const { expect } = require('chai')
 describe('creating a table', function () {
-  it('should return \'CREATE TABLE Foo (Bar int AUTO_INCREMENT NOT NULL,Baz varchar(255) DEFAULT \'Default Value\'\'', function () {
+  it('should return \'CREATE TABLE Foo (Bar int AUTO_INCREMENT NOT NULL,Baz varchar(255) DEFAULT \'Default Value\')\'', function () {
     const sql = sqlCompose(
       createTable('Foo'),
       columns(

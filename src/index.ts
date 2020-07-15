@@ -1,9 +1,9 @@
 import sqlString = require('sqlstring')
 
 export const curry = (fn: Function, arity: number = fn.length, ...args: any[]): any =>
-  arity <= args.length ?
-    fn(...args) :
-    curry.bind(null, fn, arity, ...args)
+  arity <= args.length
+    ? fn(...args)
+    : curry.bind(null, fn, arity, ...args)
 
 export interface KVObject {
   key: string,
@@ -12,10 +12,7 @@ export interface KVObject {
 type Operator = '=' | '<' | '>' | '<=' | '>='
 
 export const sqlCompose = (...args: string[]) => args.join(' ')
-// export const enclose = (sql: string) => `(${sql})`
-
 export const as = curry((key: string, alias: string) => `${key} AS ${alias}`)
-
 
 // TABLE QUERIES
 const create = curry((type: string, name: string) => `CREATE ${type} ${name}`)
@@ -26,9 +23,9 @@ export const createUniqueIndex = create('UNIQUE INDEX')
 export const column = curry((key: string, ...args: string[]) => `${key} ${args.join(' ')}`)
 export const columns = (...columns: string[]) => `(${columns.join(',')})`
 export const varchar = (length: number) => `varchar(${length})`
-export const integer = `int`
-export const autoInc = `AUTO_INCREMENT`
-export const notNull = `NOT NULL`
+export const integer = 'int'
+export const autoInc = 'AUTO_INCREMENT'
+export const notNull = 'NOT NULL'
 export const unique = (key: string) => `UNIQUE (${key})`
 export const defaultValue = (defaultValue: string) => `DEFAULT ${sqlString.escape(defaultValue)}`
 export const primaryKey = (key: string) => `PRIMARY KEY (${key})`
@@ -54,7 +51,7 @@ export const keyValuePairs = (...values: KVObject[]) => {
   }
   return `(${o.keys.join(',')}) VALUES (${o.values.join(',')})`
 }
-export const keyValue = curry((key: string, value: any) => ({ key, value: sqlString.escape(value)}))
+export const keyValue = curry((key: string, value: any) => ({ key, value: sqlString.escape(value) }))
 export const set = curry((key: string, value: string) => `${key} = ${sqlString.escape(value)}`)
 export const updates = (...sets: string[]) => `SET ${sets.join(', ')}`
 export const where = (...conditions: string[]) => `WHERE ${conditions.join(' ')}`
@@ -84,4 +81,3 @@ export const inner = join('INNER')
 export const left = join('LEFT')
 export const right = join('RIGHT')
 export const full = join('FULL OUTER')
-
