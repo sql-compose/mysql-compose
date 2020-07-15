@@ -1,4 +1,4 @@
-![alt text](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)
+[![Build Status](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)](https://travis-ci.com/enokson/mysql-compose)
 # sql-compose
 
 
