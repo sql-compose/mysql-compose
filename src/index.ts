@@ -57,7 +57,7 @@ export const updates = (...sets: string[]) => `SET ${sets.join(', ')}`
 export const where = (...conditions: string[]) => `WHERE ${conditions.join(' ')}`
 export const and = (...conditions: string[]) => `(${conditions.join(' AND ')})`
 export const or = (...conditions: string[]) => `(${conditions.join(' OR ')})`
-const operate = curry((operator: Operator, key: string, value: any) => `${key} ${operator} ${value}`)
+export const operate = curry((operator: Operator, key: string, value: any) => `${key} ${operator} ${value}`)
 export const eq = operate('=')
 export const gt = operate('>')
 export const gte = operate('>=')
