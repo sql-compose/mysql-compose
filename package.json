@@ -7,6 +7,7 @@
   "scripts": {
     "test": "npx mocha",
     "coverage": "npx nyc mocha",
+    "report": "npx nyc mocha --report lcovonly -- -R spec && codecov",
     "build": "npm run standardx && npx tsc && npm run test",
     "build:watch": "npx tsc --watch",
     "standardx": "npx standardx --fix **/*.ts"
@@ -30,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
     "chai": "^4.2.0",
+    "codecov": "^3.7.0",
     "mocha": "^8.0.1",
     "mysql": "^2.18.1",
     "nyc": "^15.1.0",
