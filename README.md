@@ -25,7 +25,7 @@ const sql = sqlCompose(
 conn.query(sql, (err, results) => { /* do things */ })
 ````
 
-###Composing Functions
+### Composing Functions  
 Each function returns a string and functions that take multiple arguments are curried allowing for easy and fast composing
 ```javascript
 const { select, from, where, eq } = require('sql-compose')
@@ -37,7 +37,7 @@ whereFooEquals(1) // => 'Foo = 1'
 where(whereFooEquals(2)) // => 'WHERE Foo = 2'
 ```
 
-###Conditions
+### Conditions  
 ```javascript
 const { select, from, where, eq, gt, gte, whereIn, or, and } = require('mysql-compose')
 const whereIdEquals1 = where(
