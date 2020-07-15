@@ -15,7 +15,7 @@ const conn = mysql.createConnection({
 })
 
 const sql = sqlCompose(
-  select('column1'),
+  select('Column1'),
   from('Table1'),
   where(
     eq('Column1', 1)
@@ -46,22 +46,22 @@ const whereIdEquals1 = where(
 const whereFooEquals = eq('Foo') 
 const whereBarIsGt = eq('Bar')
 const condition = where(
-    or(
-        whereFooEquals('Fizz'),
-        whereBarIsGt(5)
-    )
+  or(
+    whereFooEquals('Fizz'),
+    whereBarIsGt(5)
+  )
 ) // => 'WHERE (Foo = `Fizz` OR Bar > 5)'
 
 sqlCompose(
-    select('Foo', 'Bar'),
-    from('MyTable'),
-    condition
+  select('Foo', 'Bar'),
+  from('MyTable'),
+  condition
 ) // => 'SELECT Foo,Bar FROM MyTable WHERE (Foo = `Fizz` OR Bar > 5)'
 
 sqlCompose(
-    select('*'),
-    from('MyTable'),
-    where(whereIn('Id', 1, 2, 3, 4, 5))
+  select('*'),
+  from('MyTable'),
+  where(whereIn('Id', 1, 2, 3, 4, 5))
 ) // => 'SELECT * FROM MyTable WHERE Id IN (1,2,3,4,5)'
 
 
@@ -69,13 +69,13 @@ const whereColumn1Equals = eq('Column1')
 const whereColumn2IsGte = gte('Column2')
 const whereColumn3Equals = eq('Column3')
 where(
-    and(
-        or(
-            whereColumn1Equals(1),
-            whereColumn2IsGte(5)
-        ),
-        whereColumn3Equals(3)
-    )
+  and(
+    or(
+      whereColumn1Equals(1),
+      whereColumn2IsGte(5)
+    ),
+    whereColumn3Equals(3)
+  )
 ) // => 'WHERE ((Column1 = 1 OR Column2 >= 5) AND Column3 = 3)'
 ```
 
