@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)](https://travis-ci.com/enokson/mysql-compose)
+[![Build Status](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)](https://travis-ci.com/enokson/mysql-compose) 
 [![codecov](https://codecov.io/gh/enokson/mysql-compose/branch/master/graph/badge.svg)](https://codecov.io/gh/enokson/mysql-compose)
 
 
