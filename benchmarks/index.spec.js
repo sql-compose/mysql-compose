@@ -24,10 +24,15 @@ const within = milliseconds => fn => {
       break
     }
   }
-  stats.count = `${toString(stats.count)} queries/sec`
+  stats.countString = `${toString(stats.count)} queries/sec`
   return stats
 }
 const getSql = fn => ({ sql: fn() })
+const sortByCount = (a, b) => b.count - a.count
+const toPercentFixed = (acc, obj) => ((obj.count / acc.count) * 100).toFixed(1)
+const getPercent = (acc, obj) => `${obj.countString} ${acc.count ? toPercentFixed(acc, obj) : 100}%`
+const getCount = (acc, obj) => acc.count ? acc.count : obj.count
+const reducer = (acc, obj) => ({ ...acc, [`${obj.name}`]: getPercent(acc, obj), count: getCount(acc, obj) })
 
 const conn = knex({
   client: 'mysql',
@@ -63,15 +68,22 @@ const bench = (report) => {
   const oneThousandIterations = cycleCount(1000)
   const within1000 = within(1000)
   const suite = suites(getSql, oneThousandIterations, within1000)
-  const results = [
-    suite('select using sql-compose', sqlComposeFunction),
-    suite('select using knex', knexFunction),
-    suite('select using partial memorized sql-compose', selectAllFromUsersWhereIdEquals1 ),
-    suite('inner join using sql-compose', sqlComposeInnerJoin),
-    suite('inner join using knex', knexInnerJoin)
+  const selectResults = [
+    suite('sql-compose', sqlComposeFunction),
+    suite('knex', knexFunction),
+    suite('partial memorized sql-compose', selectAllFromUsersWhereIdEquals1 )
   ]
+    .sort(sortByCount)
+    .reduce(reducer, { name: 'select', count: null })
+  const innerJoinResults = [
+    suite('sql-compose', sqlComposeInnerJoin),
+    suite('knex', knexInnerJoin)
+  ]
+    .sort(sortByCount)
+    .reduce(reducer, { name: 'inner join', count: null })
   if (report) {
-    console.log(results)
+    console.log(JSON.stringify(selectResults, null, 2))
+    console.log(JSON.stringify(innerJoinResults, null, 2))
   }
 }
 
