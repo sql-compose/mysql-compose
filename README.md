@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)](https://travis-ci.com/enokson/mysql-compose) 
+![Node.js CI](https://github.com/enokson/mysql-compose/workflows/Node.js%20CI/badge.svg)
 [![codecov](https://codecov.io/gh/enokson/mysql-compose/branch/master/graph/badge.svg)](https://codecov.io/gh/enokson/mysql-compose)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Known Vulnerabilities](https://snyk.io/test/github/enokson/mysql-compose/badge.svg?targetFile=package.json)](https://snyk.io/test/github/enokson/mysql-compose?targetFile=package.json)
