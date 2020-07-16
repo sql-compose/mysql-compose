@@ -7,7 +7,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.full = exports.right = exports.left = exports.inner = exports.join = exports.joins = exports.desc = exports.orderBy = exports.groupBy = exports.all = exports.any = exports.exists = exports.between = exports.like = exports.whereIn = exports.isNull = exports.lte = exports.lt = exports.gte = exports.gt = exports.eq = exports.operate = exports.or = exports.and = exports.where = exports.updates = exports.set = exports.keyValue = exports.keyValuePairs = exports.on = exports.from = exports.sum = exports.avg = exports.count = exports.selectFn = exports.deleteFrom = exports.update = exports.insertInto = exports.select = exports.foreignKey = exports.primaryKey = exports.defaultValue = exports.unique = exports.notNull = exports.autoInc = exports.integer = exports.varchar = exports.columns = exports.column = exports.createUniqueIndex = exports.createIndex = exports.createView = exports.createTable = exports.as = exports.sqlCompose = exports.curry = void 0;
+exports.fromForeign = exports.full = exports.right = exports.left = exports.inner = exports.join = exports.joins = exports.desc = exports.orderBy = exports.groupBy = exports.all = exports.any = exports.exists = exports.between = exports.like = exports.whereIn = exports.isNull = exports.lte = exports.lt = exports.gte = exports.gt = exports.eq = exports.operate = exports.or = exports.and = exports.where = exports.updates = exports.set = exports.keyValue = exports.keyValuePairs = exports.on = exports.from = exports.sum = exports.avg = exports.count = exports.selectFn = exports.deleteFrom = exports.update = exports.insertInto = exports.select = exports.foreignKey = exports.primaryKey = exports.defaultValue = exports.unique = exports.notNull = exports.autoInc = exports.integer = exports.varchar = exports.columns = exports.column = exports.createUniqueIndex = exports.createIndex = exports.createView = exports.createTable = exports.as = exports.sqlCompose = exports.curry = void 0;
 var sqlString = require("sqlstring");
 exports.curry = function (fn, arity) {
     if (arity === void 0) { arity = fn.length; }
@@ -155,4 +155,5 @@ exports.inner = exports.join('INNER');
 exports.left = exports.join('LEFT');
 exports.right = exports.join('RIGHT');
 exports.full = exports.join('FULL OUTER');
+exports.fromForeign = exports.curry(function (table, key) { return table + "." + key; });
 //# sourceMappingURL=index.js.map

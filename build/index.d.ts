@@ -58,4 +58,5 @@ export declare const inner: any;
 export declare const left: any;
 export declare const right: any;
 export declare const full: any;
+export declare const fromForeign: any;
 //# sourceMappingURL=index.d.ts.map
