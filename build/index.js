@@ -18,12 +18,25 @@ exports.curry = function (fn, arity) {
     return arity <= args.length
         ? fn.apply(void 0, args) : exports.curry.bind.apply(exports.curry, __spreadArrays([null, fn, arity], args));
 };
+var joinStr = function (withStr, arr) {
+    var str = "" + arr[0];
+    for (var i = 1; i < arr.length; i++) {
+        str += "" + withStr + arr[i];
+    }
+    return str;
+};
+var reduceArr = function (fn, arr, acc) {
+    for (var i = 0; i < arr.length; i++) {
+        acc = fn(acc, arr[i]);
+    }
+    return acc;
+};
 exports.sqlCompose = function () {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
-    return args.join(' ');
+    return joinStr(' ', args);
 };
 exports.as = exports.curry(function (key, alias) { return key + " AS " + alias; });
 // TABLE QUERIES
@@ -37,14 +50,14 @@ exports.column = exports.curry(function (key) {
     for (var _i = 1; _i < arguments.length; _i++) {
         args[_i - 1] = arguments[_i];
     }
-    return key + " " + args.join(' ');
+    return key + " " + joinStr(' ', args);
 });
 exports.columns = function () {
     var columns = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         columns[_i] = arguments[_i];
     }
-    return "(" + columns.join(',') + ")";
+    return "(" + joinStr(',', columns) + ")";
 };
 exports.varchar = function (length) { return "varchar(" + length + ")"; };
 exports.integer = 'int';
@@ -60,7 +73,7 @@ exports.select = function () {
     for (var _i = 0; _i < arguments.length; _i++) {
         columns[_i] = arguments[_i];
     }
-    return "SELECT " + columns.join(',');
+    return "SELECT " + joinStr(',', columns);
 };
 exports.insertInto = function (table) { return "INSERT INTO " + table; };
 exports.update = function (table) { return "UPDATE " + table; };
@@ -76,13 +89,13 @@ exports.keyValuePairs = function () {
     for (var _i = 0; _i < arguments.length; _i++) {
         values[_i] = arguments[_i];
     }
-    var o = { keys: [], values: [] };
-    for (var _a = 0, values_1 = values; _a < values_1.length; _a++) {
-        var kv = values_1[_a];
-        o.keys.push(kv.key);
-        o.values.push(kv.value);
+    var keyStr = values[0].key;
+    var valueStr = values[0].value;
+    for (var i = 1; i < values.length; i++) {
+        keyStr += "," + values[i].key;
+        valueStr += "," + values[i].value;
     }
-    return "(" + o.keys.join(',') + ") VALUES (" + o.values.join(',') + ")";
+    return "(" + keyStr + ") VALUES (" + valueStr + ")";
 };
 exports.keyValue = exports.curry(function (key, value) { return ({ key: key, value: sqlString.escape(value) }); });
 exports.set = exports.curry(function (key, value) { return key + " = " + sqlString.escape(value); });
@@ -121,12 +134,13 @@ exports.gte = exports.operate('>=');
 exports.lt = exports.operate('<');
 exports.lte = exports.operate('<=');
 exports.isNull = function (key) { return key + " IS NULL"; };
+// export const whereIn = curry((key: string, ...values: any[]) => `${key} IN (${values.map(v => `${sqlString.escape(v)}`).join(', ')})`)
 exports.whereIn = exports.curry(function (key) {
     var values = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         values[_i - 1] = arguments[_i];
     }
-    return key + " IN (" + values.map(function (v) { return "" + sqlString.escape(v); }).join(', ') + ")";
+    return key + " IN (" + joinStr(',', values) + ")";
 });
 exports.like = exports.curry(function (key, pattern) { return key + " LIKE " + sqlString.escape(pattern); });
 exports.between = exports.curry(function (key, value1, value2) { return key + " BETWEEN " + sqlString.escape(value1) + " AND " + sqlString.escape(value2); });
@@ -139,16 +153,17 @@ exports.orderBy = function () {
     for (var _i = 0; _i < arguments.length; _i++) {
         columns[_i] = arguments[_i];
     }
-    return "ORDER BY " + columns.join(', ');
+    return "ORDER BY " + joinStr(', ', columns);
 };
 exports.desc = function (column) { return column + " DESC"; };
 // joins
+// export const joins = curry((table: string, ...joins: string[]) => `FROM ${joins.reduce((acc, str) => `(${acc} ${str})`, table)}`)
 exports.joins = exports.curry(function (table) {
     var joins = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         joins[_i - 1] = arguments[_i];
     }
-    return "FROM " + joins.reduce(function (acc, str) { return "(" + acc + " " + str + ")"; }, table);
+    return "FROM " + reduceArr(function (acc, str) { return "(" + acc + " " + str + ")"; }, joins, table);
 });
 exports.join = exports.curry(function (type, table, condition) { return type + " JOIN " + table + " ON " + condition; });
 exports.inner = exports.join('INNER');

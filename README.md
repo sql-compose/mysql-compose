@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/enokson/mysql-compose/branch/master/graph/badge.svg)](https://codecov.io/gh/enokson/mysql-compose)
 
 # sql-compose
+The best elegance and speed have to offer
 
 ## Install
 ```shell script
@@ -37,9 +38,15 @@ conn.query(sql, (err, results) => { /* do things */ })
 
 ### Composing Functions  
 Each function returns a string and functions that take multiple
-arguments are curried allowing for easy, flexible, and fast composition
+arguments are curried allowing for easy, flexible, and fast composition.
+
+Since each function returns a string, when you partially compose a sql
+command ahead of when you need it (such as, before a route declaration
+in the express or fastify frameworks) it has the effect of being memorized.
+Allowing you to build only what is needed when time matters most
+(such as in a route declaration).
 ```javascript
-const { select, from, where, eq } = require('sql-compose')
+const { select, from, where, eq } = require('mysql-compose')
 
 // select all columns
 const selectAll = select('*') // => 'SELECT *'
@@ -224,3 +231,22 @@ sqlCompose(select(tenDaysBefore('2017-06-15'))) // => SELECT DATE_SUB("2017-06-1
 sqlCompose(select(oneDayBefore('2017-06-15'))) // => SELECT DATE_SUB("2017-06-15", INTERVAL 1 DAY)
 
 ```
+
+### So, how fast is it? Very...
+#### Generating a simple select query with a single condition
+mysql-compose (w/ partial memorization): 3,740,971 queries/sec  
+mysql-compose (w/o any memorization): 3,134,941 queries/sec  
+knex: 172,600 queries/sec
+
+#### Generating an inner join sql query
+mysql-compose (w/o any memorization): 1,586,707 queries/sec  
+knex: 106,207 queries/sec
+
+Run your own benchmark tests with:
+```
+npm run benchmark
+```
+
+### Acknowledgements
+The [curry](https://www.30secondsofcode.org/js/s/curry) function was shamelessly taken from the 30 seconds of code website.  
+This project also uses [sqlstring](https://www.npmjs.com/package/sqlstring) to escape values in sql queries.

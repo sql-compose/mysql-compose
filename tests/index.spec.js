@@ -191,11 +191,11 @@ describe('selecting', function () {
       )
     )).to.equal('SELECT column1 FROM Table1 WHERE column1 BETWEEN 1 AND 5')
   })
-  it('should return \'SELECT * FROM table1 WHERE ID IN (1, 2, 3, 4, 5)\'', function () {
+  it('should return \'SELECT * FROM table1 WHERE ID IN (1,2,3,4,5)\'', function () {
     expect(sqlCompose(
       selectAllFromTable1,
       where(whereIn('ID', 1, 2, 3, 4, 5))
-    )).to.equal('SELECT * FROM table1 WHERE ID IN (1, 2, 3, 4, 5)')
+    )).to.equal('SELECT * FROM table1 WHERE ID IN (1,2,3,4,5)')
   })
   it('should return \'SELECT * FROM table_name WHERE EXISTS (SELECT column_name FROM table_name WHERE ID = 1)\'', function () {
     const selectionExists = exists(
