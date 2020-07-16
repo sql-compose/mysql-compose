@@ -26,6 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
 #     - run: npm ci
 #     - run: npm run build --if-present
-    - run: npm run coverage
-    - run: npm run report:mk
-    - run: npm run report:push
+    - run: ./node_modules/.bin/nyc ./node_modules/.bin/mocha
+    - run: ./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov
+    - run: ./node_modules/.bin/codecov
