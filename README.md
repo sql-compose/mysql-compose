@@ -179,3 +179,48 @@ sqlCompose(
 
 ```
 
+### Don't see a function a you need? Make one.
+mysql-compose does not encompass all the vast possible functions that mysql
+has to offer. So, feel free to fill in the gaps with your code easily
+with no plugin-glue required.
+```javascript
+// here is one example
+
+const { sqlCompose, select, from } = require('mysql-compose')
+
+// my plugin
+const date = str => `DATE(${str})`
+
+sqlCompose(select(date('YYYY-MM-DD')), from('MyDates')) // => "SELECT DATE('YYYY-MM-DD') FROM MyDates"
+
+```
+```javascript
+// and another
+// mysql-compose comes with a curry function to help with building queries
+
+const { curry, sqlCompose, select } = require('mysql-compose')
+
+const interval = curry((fnName, interval, value, date) => `${fnName}("${date}", INTERVAL ${value} ${interval})`)
+
+// using our new interval function to create the DATE_ADD function
+const dateAdd = interval('DATE_ADD')
+const addDays = dateAdd('DAY')
+const addMinutes = dateAdd('MINUTE')
+const tenDaysAfter = addDays(10)
+const sixDaysAfter = addDays(6)
+const fiveMinutesAfter = addMinutes(5)
+
+sqlCompose(select(tenDaysAfter('2017-06-15'))) // => SELECT DATE_ADD("2017-06-15", INTERVAL 10 DAY)
+sqlCompose(select(fiveMinutesAfter('2017-06-15'))) // => SELECT DATE_ADD("2017-06-15", INTERVAL 10 MINUTE)
+sqlCompose(select(sixDaysAfter('2017-06-15'))) // => SELECT DATE_ADD("2017-06-15", INTERVAL 6 DAY)
+
+// using the same interval function to create the DATE_SUB function
+const dateSub = interval('DATE_SUB')
+const subtractDays = dateSub('DAY')
+const tenDaysBefore = subtractDays(10)
+const oneDayBefore = subtractDays(1)
+
+sqlCompose(select(tenDaysBefore('2017-06-15'))) // => SELECT DATE_SUB("2017-06-15", INTERVAL 10 DAY)
+sqlCompose(select(oneDayBefore('2017-06-15'))) // => SELECT DATE_SUB("2017-06-15", INTERVAL 1 DAY)
+
+```
