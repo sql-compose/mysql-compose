@@ -7,6 +7,7 @@
   "scripts": {
     "test": "npx mocha",
     "coverage": "npx nyc mocha",
+    "benchmark": "node ./benchmarks/index.spec.js",
     "report:mk": "npx nyc report --reporter=text-lcov > coverage.lcov",
     "report:push": "codecov",
     "build": "npm run standardx && npx tsc && npm run test",
@@ -24,6 +25,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/benchmark": "^1.0.33",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.0.0",
     "@types/node": "^14.0.22",
@@ -35,6 +37,7 @@
     "chai": "^4.2.0",
     "codecov": "^3.7.0",
     "knex": "^0.21.2",
+    "microtime": "^3.0.0",
     "mocha": "^8.0.1",
     "mysql": "^2.18.1",
     "nyc": "^15.1.0",
