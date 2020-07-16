@@ -7,6 +7,7 @@
   "scripts": {
     "test": "npx mocha",
     "coverage": "npx nyc mocha",
+    "benchmark": "node ./benchmarks/index.spec.js",
     "report:mk": "npx nyc report --reporter=text-lcov > coverage.lcov",
     "report:push": "codecov",
     "build": "npm run standardx && npx tsc && npm run test",
@@ -33,6 +34,8 @@
     "@typescript-eslint/parser": "^3.6.0",
     "chai": "^4.2.0",
     "codecov": "^3.7.0",
+    "knex": "^0.21.2",
+    "microtime": "^3.0.0",
     "mocha": "^8.0.1",
     "mysql": "^2.18.1",
     "nyc": "^15.1.0",

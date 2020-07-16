@@ -12,7 +12,7 @@ const {
   from, as, on,
   where, and, or, eq, gt, gte, lt, lte, isNull, between, whereIn, exists, any, all, like,
   orderBy, groupBy, desc,
-  joins, inner, left, right, full  } = require('../build/index')
+  joins, inner, left, right, full, fromForeign  } = require('../build/index')
 const { expect } = require('chai')
 describe('creating a table', function () {
   it('should return \'CREATE TABLE Foo (Bar int AUTO_INCREMENT NOT NULL,Baz varchar(255) DEFAULT \'Default Value\')\'', function () {
@@ -191,11 +191,11 @@ describe('selecting', function () {
       )
     )).to.equal('SELECT column1 FROM Table1 WHERE column1 BETWEEN 1 AND 5')
   })
-  it('should return \'SELECT * FROM table1 WHERE ID IN (1, 2, 3, 4, 5)\'', function () {
+  it('should return \'SELECT * FROM table1 WHERE ID IN (1,2,3,4,5)\'', function () {
     expect(sqlCompose(
       selectAllFromTable1,
       where(whereIn('ID', 1, 2, 3, 4, 5))
-    )).to.equal('SELECT * FROM table1 WHERE ID IN (1, 2, 3, 4, 5)')
+    )).to.equal('SELECT * FROM table1 WHERE ID IN (1,2,3,4,5)')
   })
   it('should return \'SELECT * FROM table_name WHERE EXISTS (SELECT column_name FROM table_name WHERE ID = 1)\'', function () {
     const selectionExists = exists(
@@ -414,6 +414,15 @@ describe('joining tables', function () {
     const sql = sqlCompose(
       select('column_name'),
       joins('table1', full('table2', eq('table1.column_name', 'table2.column_name')))
+    )
+    expect(sql).to.equal('SELECT column_name FROM (table1 FULL OUTER JOIN table2 ON table1.column_name = table2.column_name)')
+  })
+  it('should return \'SELECT column_name FROM (table1 FULL OUTER JOIN table2 ON table1.column_name = table2.column_name)\'', function () {
+    const fromTable1 = fromForeign('table1')
+    const fromTable2 = fromForeign('table2')
+    const sql = sqlCompose(
+      select('column_name'),
+      joins('table1', full('table2', eq(fromTable1('column_name'), fromTable2('column_name'))))
     )
     expect(sql).to.equal('SELECT column_name FROM (table1 FULL OUTER JOIN table2 ON table1.column_name = table2.column_name)')
   })
