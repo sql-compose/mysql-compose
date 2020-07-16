@@ -1,13 +1,13 @@
 [![Build Status](https://travis-ci.com/enokson/mysql-compose.svg?branch=master)](https://travis-ci.com/enokson/mysql-compose) 
 [![codecov](https://codecov.io/gh/enokson/mysql-compose/branch/master/graph/badge.svg)](https://codecov.io/gh/enokson/mysql-compose)
 
-
 # sql-compose
 
-
 ## Install
-`npm i mysql-compose`  
-`npm i mysql2`
+```shell script
+$ npm i mysql-compose
+$ npm i mysql2
+```
 
 ## Examples  
 ### Getting Started  
@@ -15,12 +15,14 @@
 const mysql = require('mysql2')
 const { sqlCompose, select, from, where } = require('sql-compose')
 
+// connect to a mysql server
 const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test'
 })
 
+// create a select sql cmd to send to the server
 const sql = sqlCompose(
   select('Column1'),
   from('Table1'),
@@ -29,29 +31,75 @@ const sql = sqlCompose(
   )
 ) // => 'SELECT column1 FROM Table1 WHERE Column1 = 1'
 
+// send the query
 conn.query(sql, (err, results) => { /* do things */ })
 ````
 
 ### Composing Functions  
-Each function returns a string and functions that take multiple arguments are curried allowing for easy and fast composing
+Each function returns a string and functions that take multiple
+arguments are curried allowing for easy, flexible, and fast composition
 ```javascript
 const { select, from, where, eq } = require('sql-compose')
+
+// select all columns
 const selectAll = select('*') // => 'SELECT *'
+
+// create a function that selects all columns from a given table
 const selectAllFrom = table => sqlCompose(selectAll, from(table))
+
+// select all columns from Table1
 const selectAllFromTable1 = selectAllFrom('Table1') // => 'SELECT * FROM Table1'
-const whereFooEquals = eq('Foo')
+
+// this function returns another function
+const whereFooEquals = eq('Foo') // (value) => `Foo = ${value}`
+
+// returning a where condition
 whereFooEquals(1) // => 'Foo = 1'
+
+// returning a condition with the WHERE clause
 where(whereFooEquals(2)) // => 'WHERE Foo = 2'
+```
+
+### Creating Tables
+```javascript
+const { 
+  sqlCompose, createTable, columns, column, 
+  integer, autoInc, notNull, varchar, defaultValue } = require('mysql-compose')
+
+// create a table named Foo with two columns
+sqlCompose(
+  createTable('Foo'),
+  columns(
+    column('Bar', integer, autoInc, notNull),
+    column('Baz', varchar(255), defaultValue('Default Value'))
+  )
+) // => "CREATE TABLE Foo (Bar int AUTO_INCREMENT NOT NULL,Baz varchar(255) DEFAULT 'Default Value')"
+
+// Create a foreign key constraint
+const idReferences = foreignKey('Foo_ID')
+// Create a table with a primary and foreign key
+sqlCompose(
+  createTable('Foo'),
+  columns(
+    column('Foo_ID', integer, notNull, autoInc),
+    column('Bar', varchar(255)),
+    primaryKey('Foo_ID'),
+    idReferences('Baz', 'Baz_ID')
+  )
+) // => 'CREATE TABLE Foo (Foo_ID int NOT NULL AUTO_INCREMENT,Bar varchar(255),PRIMARY KEY (Foo_ID),FOREIGN KEY (Foo_ID) REFERENCES Baz(Baz_ID))'
 ```
 
 ### Conditions  
 ```javascript
 const { select, from, where, eq, gt, gte, whereIn, or, and } = require('mysql-compose')
-const whereIdEquals1 = where(
-    eq('Id', 1)
-) // => 'WHERE Id = 1'
+
+const IdEquals1 = eq('Id', 1) // => 'Id = 1'
+const whereIdEquals1 = where(IdEquals1) // => 'WHERE Id = 1'
+
 const whereFooEquals = eq('Foo') 
 const whereBarIsGt = eq('Bar')
+
+
 const condition = where(
   or(
     whereFooEquals('Fizz'),
@@ -59,11 +107,13 @@ const condition = where(
   )
 ) // => 'WHERE (Foo = `Fizz` OR Bar > 5)'
 
+
 sqlCompose(
   select('Foo', 'Bar'),
   from('MyTable'),
   condition
 ) // => 'SELECT Foo,Bar FROM MyTable WHERE (Foo = `Fizz` OR Bar > 5)'
+
 
 sqlCompose(
   select('*'),
