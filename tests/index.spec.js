@@ -14,6 +14,8 @@ const {
   orderBy, groupBy, desc,
   joins, inner, left, right, full, fromForeign  } = require('../build/index')
 const { expect } = require('chai')
+
+
 describe('creating a table', function () {
   it('should return \'CREATE TABLE Foo (Bar int AUTO_INCREMENT NOT NULL,Baz varchar(255) DEFAULT \'Default Value\')\'', function () {
     const sql = sqlCompose(
@@ -79,6 +81,9 @@ describe('selecting', function () {
   const column1lte = lte('column1')
   const column1IsNull = isNull('column1')
   const column2Eq = eq('column2')
+  beforeEach(() => {
+    console.log("I am running a new test!")
+  })
   it('should return \'SELECT column1,column2 FROM Table1\'', function () {
     const sql = sqlCompose(
       select('column1', 'column2'),

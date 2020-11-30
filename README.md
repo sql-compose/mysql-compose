@@ -235,13 +235,13 @@ sqlCompose(select(oneDayBefore('2017-06-15'))) // => SELECT DATE_SUB("2017-06-15
 
 ### So, how fast is it? Very...
 #### Generating a simple select query with a single condition
-mysql-compose (w/ partial memorization): 3,740,971 queries/sec  
-mysql-compose (w/o any memorization): 3,134,941 queries/sec  
-knex: 172,600 queries/sec
+|Lib      |Query String Builds  |
+|:-------:|:------------:|
+| mysql-compose (w/ partial memorization) | 3,740,971 queries/sec 100% |
+| mysql-compose (w/o any memorization) | 3,134,941 queries/sec 83.8% |
+| knex | 172,600 queries/sec 04.6% |
 
-#### Generating an inner join sql query
-mysql-compose (w/o any memorization): 1,586,707 queries/sec  
-knex: 106,207 queries/sec
+
 
 Run your own benchmark tests with:
 ```
